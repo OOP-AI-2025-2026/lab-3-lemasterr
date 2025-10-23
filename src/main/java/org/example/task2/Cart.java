@@ -4,66 +4,79 @@ import java.util.Arrays;
 
 public class Cart {
 
-    public Item[] contents;
-    int index;
+    private Item[] contents;
+    private int index;
 
-    Cart(Item[] _contents) {
-        this.contents = _contents;
+    public Cart(Item[] contents) {
+        if (contents == null || contents.length == 0)
+            throw new IllegalArgumentException("Масив товарів не може бути порожнім");
+        this.contents = contents;
+        this.index = 0;
     }
 
-    public void removeById(int itemIndex) {
-
-        if (index == 0)
+    public void add(Item item) {
+        if (this.isCartFull()) {
+            System.out.println("Кошик заповнений — не можна додати новий товар.");
             return;
+        }
+        this.contents[this.index] = item;
+        this.index++;
+    }
 
-        int foundItemIndex = findItemInArray(contents[itemIndex]);
+    public void removeById(long itemId) {
+        if (this.index == 0) return;
 
-        if (foundItemIndex == -1)
-            return;
+        int foundItemIndex = this.findItemIndexById(itemId);
+        if (foundItemIndex == -1) return;
 
-        if (foundItemIndex == index - 1) {
-            contents[index - 1] = null;
-            index--;
+        if (foundItemIndex == this.index - 1) {
+            this.contents[this.index - 1] = null;
+            this.index--;
             return;
         }
 
-        shiftArray(foundItemIndex);
+        this.shiftArray(foundItemIndex);
     }
 
-    public void shiftArray(int itemIndex) {
-        for (int i = itemIndex; i < index - 1; i++) {
-            contents[i] = contents[i + 1];
-        }
-        contents[index-1] = null;
-        index--;
-    }
-
-    public int findItemInArray(Item item) {
-        for (int i = 0; i < index; i++) {
-            if (contents[i].id == item.id) {
+    private int findItemIndexById(long id) {
+        for (int i = 0; i < this.index; i++) {
+            if (this.contents[i].getId() == id) {
                 return i;
             }
         }
-
         return -1;
     }
 
-    void add(Item item) {
-        if (isCartFull())
-            return;
-
-        contents[index] = item;
-        index++;
+    private void shiftArray(int itemIndex) {
+        for (int i = itemIndex; i < this.index - 1; i++) {
+            this.contents[i] = this.contents[i + 1];
+        }
+        this.contents[this.index - 1] = null;
+        this.index--;
     }
 
     public boolean isCartFull() {
-        return index == contents.length;
+        return this.index == this.contents.length;
     }
 
+    public int getSize() {
+        return this.index;
+    }
+
+    public double getTotalPrice() {
+        double total = 0;
+        for (int i = 0; i < this.index; i++) {
+            total += this.contents[i].getPrice();
+        }
+        return total;
+    }
+
+    // метод toString() для відображення стану кошика
     @Override
     public String toString() {
         return "Cart{" +
-                "contents=" + Arrays.toString(contents) +
+                "contents=" + Arrays.toString(Arrays.copyOf(this.contents, this.index)) +
+                ", total=" + this.getTotalPrice() + " грн" +
                 '}' + "\n";
     }
 }

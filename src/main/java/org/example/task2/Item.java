@@ -1,23 +1,45 @@
 package org.example.task2;
 
 public class Item {
+    private long id;
+    private String name;
+    private double price;
 
-    public long id;
-    public String name;
-    public double price;
+    public Item(long id, String name, double price) {
+        // використання this і перевірки даних
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID має бути більше 0");
+        }
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Назва не може бути порожньою");
+        }
+        if (price < 0) {
+            throw new IllegalArgumentException("Ціна не може бути від'ємною");
+        }
 
-    public Item(long _id, String _name, double _price) {
-        this.id = _id;
-        this.name = _name;
-        this.price = _price;
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public double getPrice() {
+        return this.price;
     }
 
     @Override
     public String toString() {
         return "Item{" +
-                "id=" + id +
-                ", price=" + price +
-                ", name='" + name + '\'' +
-                '}' + "\n";
+                "id=" + this.id +
+                ", name='" + this.name + '\'' +
+                ", price=" + this.price +
+                " грн}";
     }
 }
