@@ -3,6 +3,12 @@ package org.example.task2;
 public class Main {
     public static void main(String[] args) {
 
+        Box box = new Box(2.5, 3.0, 4.0);
+        System.out.println("=== Box ===");
+        System.out.printf("Площа поверхні: %.2f%n", box.surfaceArea());
+        System.out.printf("Площа бічної поверхні: %.2f%n", box.lateralSurfaceArea());
+        System.out.printf("Об'єм: %.2f%n", box.volume());
+
         Cart cart = new Cart(new Item[10]);
         cart.add(new Item(1, "Samsung Galaxy S23", 27999));
         cart.add(new Item(2, "Lenovo IdeaPad 3", 19499));
@@ -24,5 +30,14 @@ public class Main {
         Order order = new Order(1L, "John");
         String bill = order.formOrderBill(cart);
         System.out.println(bill);
+
+        IntStack st = new IntStack();
+        st.push(10); st.push(20); st.push(30);
+        System.out.println(st);
+        System.out.println(st.peek());
+        System.out.println(st.pop());
+        System.out.println(st.size());
+        st.clear();
+        System.out.println(st.isEmpty());
     }
 }
